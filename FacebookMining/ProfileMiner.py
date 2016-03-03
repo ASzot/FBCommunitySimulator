@@ -8,7 +8,6 @@ class ProfileMiner:
 	def __init__(self, driver):
 		self.driver = driver
 		self.likesData = []
-
 	@staticmethod
 	def getUserFriends(driver, profileURL):
 		# Return the list of all of a user's friends in an array.
@@ -82,7 +81,6 @@ class ProfileMiner:
 			likedPageDest = likedPageLink.get_attribute("href")
 			self.likesData.append(likedPageDest)
 			print likedPageDest
-		return
 
 
 	def __minePics(self):
@@ -93,7 +91,7 @@ class ProfileMiner:
 
 		uniqueSaveName = get_a_uuid()
 
-		urllib.urlretrieve(profileImgSrc, uniqueSaveName + "Profile.png")
+		urllib.urlretrieve(profileImgSrc, "images/" + uniqueSaveName + ".png")
 
 		# Next save all of the images that the user has in their albums. 
 		albumEles = self.driver.find_elements_by_xpath("//a[contains(@class,'uiMediaThumb')]")
@@ -121,16 +119,16 @@ class ProfileMiner:
 				else:
 					imgSrcDests.append(imgSrc)
 
-				if imgSrcDests.length > self.MAX_PHOTOS_PER_USE:
+				if len(imgSrcDests) > self.MAX_PHOTOS_PER_USER:
 					shouldContinue = False
-			if imgSrcDests.length > self.MAX_PHOTOS_PER_USE:
+			if len(imgSrcDests) > self.MAX_PHOTOS_PER_USER:
 				break
 
 		for imgSrcDest in imgSrcDests:
 			self.driver.get(imgSrcDest)
 			# Save the image. 
 			uniqueSaveName = get_a_uuid()
-			urllib.urlretrieve(imgSrcDest, uniqueSave + ".png")
+			urllib.urlretrieve(imgSrcDest, "images/" + uniqueSaveName + ".png")
 
 
 
