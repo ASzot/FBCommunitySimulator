@@ -6,7 +6,8 @@ import pickle
 
 driver = webdriver.Firefox()
 
-fbObj = FacebookObject(driver, "farfanfefe@gmail.com", "utug5,p23x")
+#Enter your own username and password here."
+fbObj = FacebookObject(driver, "USERNAME", "PASSWORD")
 
 fbObj.login()
 
