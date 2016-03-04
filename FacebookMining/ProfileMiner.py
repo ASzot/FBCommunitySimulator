@@ -2,6 +2,15 @@ import urllib
 import time
 from selenium.common.exceptions import NoSuchElementException 
 from Core.FuncHelper import *
+from FacebookData.FbDataMgr import FbDataMgr
+
+
+class UserProfileData:
+	def __init__(self, imageLocs, gender, interestedIn):
+		self.imageLocs = imageLocs
+		self.gender = gender
+		self.interestedIn = interestedIn
+
 
 class ProfileMiner:
 	MAX_PHOTOS_PER_USER = 10
@@ -36,12 +45,19 @@ class ProfileMiner:
 
 		return allFriendsData
 
+
+	def getProfileObj(self):
+		profileObj = UserProfileData(self.likeData, self.genderData, self.interestedIn)	
+		return profileObj
+
+
 	def mineProfile(self, profileURL):
 		self.profileURL = profileURL.split("?")[0]
 
 		self.__minePics()
 		self.__mineLikes()
 		self.__mineInfo()
+
 
 	def __getDataFor(self, dataFieldLblName):
 		
@@ -68,6 +84,8 @@ class ProfileMiner:
 	def __mineLikes(self):
 		self.driver.get(self.profileURL + "/likes")
 		
+		fbDataMgr = FbDataMgr.getInstance()
+
 		# TOOD Make a way to get all of the user's likes. 
 		#self.driver.execute_script("$(#pageFooter).scrollIntoView()")
 
@@ -79,8 +97,8 @@ class ProfileMiner:
 
 			# Get the link location 
 			likedPageDest = likedPageLink.get_attribute("href")
-			self.likesData.append(likedPageDest)
-			print likedPageDest
+			fbDataMgr.addLikeData(likedPageDest)
+		
 
 
 	def __minePics(self):
