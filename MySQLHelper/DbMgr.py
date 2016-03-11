@@ -12,3 +12,11 @@ class DbMgr:
 	def loadAllUserProfiles(self):
 		#TODO:
 		# Load all of the user profiles and return them in an arrray
+
+	def saveMinedLikeData(self, profileMiner):
+		#TODO:
+		# Save all of the likes from the profile miner here. 
+
+	def loadMinedLikedData(self):
+		#TODO:
+		# Load of all the data from the database it should be an array of the URL pages of the pages that could be liked

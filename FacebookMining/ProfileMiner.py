@@ -3,13 +3,7 @@ import time
 from selenium.common.exceptions import NoSuchElementException 
 from Core.FuncHelper import *
 from FacebookData.FbDataMgr import FbDataMgr
-
-
-class UserProfileData:
-	def __init__(self, imageLocs, gender, interestedIn):
-		self.imageLocs = imageLocs
-		self.gender = gender
-		self.interestedIn = interestedIn
+from ProfileData import ProfileData
 
 
 class ProfileMiner:

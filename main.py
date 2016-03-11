@@ -14,7 +14,10 @@ def collectUserInfo(dbMgr):
 
 	for userFriend in userFriends:
 		profileMiner.mineProfile(userFriends[0])
-		dbMgr.saveUserProfile(profileMiner.getUserProfile
+		dbMgr.saveUserProfile(profileMiner.getProfileObj())
+
+	dbMgr.saveMinedLikedData(profileMiner)
+	
 	# To avoid making too many calls to facebook too fast and seeming like a robot. 
 	time.sleep(3)
 
