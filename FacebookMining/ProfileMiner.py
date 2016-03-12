@@ -2,15 +2,19 @@ import urllib
 import time
 from selenium.common.exceptions import NoSuchElementException 
 from Core.FuncHelper import *
-from FacebookData.FbDataMgr import FbDataMgr
-from ProfileData import ProfileData
+from FacebookMining.FbDataMgr import FbDataMgr
+from ProfileData import UserProfileData
 
 
 class ProfileMiner:
 	MAX_PHOTOS_PER_USER = 10
+
+
 	def __init__(self, driver):
 		self.driver = driver
 		self.likesData = []
+
+
 	@staticmethod
 	def getUserFriends(driver, profileURL):
 		# Return the list of all of a user's friends in an array.
@@ -41,12 +45,14 @@ class ProfileMiner:
 
 
 	def getProfileObj(self):
-		profileObj = UserProfileData(self.likeData, self.genderData, self.interestedIn)	
+		profileObj = UserProfileData(self.genderData, self.interestedIn, self.userImages)
 		return profileObj
 
 
 	def mineProfile(self, profileURL):
 		self.profileURL = profileURL.split("?")[0]
+
+		self.userImages = []
 
 		self.__minePics()
 		self.__mineLikes()
@@ -78,7 +84,7 @@ class ProfileMiner:
 	def __mineLikes(self):
 		self.driver.get(self.profileURL + "/likes")
 		
-		fbDataMgr = FbDataMgr.getInstance()
+		fbDataMgr = FbDataMgr.Instance()
 
 		# TOOD Make a way to get all of the user's likes. 
 		#self.driver.execute_script("$(#pageFooter).scrollIntoView()")
@@ -139,8 +145,11 @@ class ProfileMiner:
 		for imgSrcDest in imgSrcDests:
 			self.driver.get(imgSrcDest)
 			# Save the image. 
-			uniqueSaveName = get_a_uuid()
-			urllib.urlretrieve(imgSrcDest, "images/" + uniqueSaveName + ".png")
+			uniqueSaveName = get_a_uuid() + ".png"
+
+			self.userImages.append(uniqueSaveName)
+
+			urllib.urlretrieve(imgSrcDest, "images/" + uniqueSaveName)
 
 
 
