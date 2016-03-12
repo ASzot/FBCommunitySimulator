@@ -10,7 +10,11 @@ import pickle
 
 def collectUserInfo(dbMgr, driver):
 	#Enter your own username and password here."
-	fbObj = FacebookObject(driver, "USERNAME", "PASSWORD")
+	with open("fbcred.txt") as credFile:
+		credContent = [line.rstrip('\n') for line in file]
+
+
+	fbObj = FacebookObject(driver, credContent[0], credContent[1])
 
 	fbObj.login()
 
@@ -36,6 +40,9 @@ sqlConnect = SQLConnect()
 sqlConnect.connect()
 
 dbMgr = DbMgr(sqlConnect)
+
+#ONLY RUN THIS THE FIRST TIME THE APPLICATION IS RUNNING
+dbMgr.setupDatabase()
 
 driver = webdriver.Firefox()
 
