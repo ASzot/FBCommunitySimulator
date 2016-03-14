@@ -8,7 +8,7 @@ class DbMgr:
 
 	# WARNING ALL DATA WILL BE DELETED
 	def setupDatabase(self):
-		self.connector.query("DROP TABLE Persons IF EXISTS")
+		self.connector.query("DROP TABLE IF EXISTS Persons")
 		self.connector.query("CREATE TABLE Persons ("
 							 "id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, "
 							 "gender VARCHAR(12),"
@@ -21,18 +21,17 @@ class DbMgr:
 							 "email VARCHAR(50),"
 							 "emailPass VARCHAR(16),"
 							 "facebookPass VARCHAR(16))")
-
-		self.connector.query("DROP TABLE Images IF EXISTS")
+		self.connector.query("DROP TABLE IF EXISTS Images")
 		self.connector.query("CREATE TABLE Images ("
 							 "id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, "
-							 "location VARCHAR(30)"
+							 "location VARCHAR(30),"
 							 "userId INT(6) UNSIGNED)")
 
-		self.connector.query("DROP TABLE LikedPage IF EXISTS")
+		self.connector.query("DROP TABLE IF EXISTS LikedPage")
 		self.connector.query("CREATE TABLE LikedPage ("
 							 "id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,"
-							 "url VARCHAR(300) NOT NULL"
-							 "userId INT(6) UNSIGNED"
+							 "url VARCHAR(300) NOT NULL,"
+							 "userId INT(6) UNSIGNED,"
 							 "date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)")
 
 

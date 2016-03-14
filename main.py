@@ -8,10 +8,7 @@ import time
 import pickle
 
 
-def collectUserInfo(dbMgr, driver):
-	#Enter your own username and password here."
-	with open("fbcred.txt") as credFile:
-		credContent = [line.rstrip('\n') for line in file]
+def collectUserInfo(dbMgr, driver, cred):
 
 
 	fbObj = FacebookObject(driver, credContent[0], credContent[1])
@@ -36,7 +33,11 @@ def collectUserInfo(dbMgr, driver):
 def run(dbMgr):
 	pass
 
-sqlConnect = SQLConnect()
+
+with open("cred.txt") as credFile:
+	cred = [line.rstrip('\n') for line in credFile]
+
+sqlConnect = SQLConnect(cred[2], cred[3], cred[4], cred[5])
 sqlConnect.connect()
 
 dbMgr = DbMgr(sqlConnect)
@@ -44,16 +45,16 @@ dbMgr = DbMgr(sqlConnect)
 #ONLY RUN THIS THE FIRST TIME THE APPLICATION IS RUNNING
 dbMgr.setupDatabase()
 
-driver = webdriver.Firefox()
+#driver = webdriver.Firefox()
 
 # Either mine the data and save it to the database.
 # This is creating the database and setting up the necessary data.
-collectUserInfo(dbMgr, driver)
+#collectUserInfo(dbMgr, driver)
 
 # Or use the data already present in the database to load and update the users 
 #run(dbMgr)
 
-sqlConnect.disconnect()
+#sqlConnect.disconnect()
 
-time.sleep(3)
-driver.close()
+#time.sleep(3)
+#ndriver.close()
