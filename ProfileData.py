@@ -7,14 +7,6 @@ class UserProfileData:
         self.interestedIn = interestedIn
         self.userImages = userImages
 
-    def __init__(self, gender, interestedIn, first, last, birthDay, birthMonth, birthYear):
-        self.gender = gender
-        self.interestedIn = interestedIn
-        self.first = first
-        self.last = last
-        self.birthDay = birthDay
-        self.birthMonth = birthMonth
-        self.birthYear = birthYear
 
     def genUserInfo(self, nameFactory):
         if self.gender == "Male":

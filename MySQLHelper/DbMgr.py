@@ -37,27 +37,23 @@ class DbMgr:
 
 	def saveUserProfile(self, userProfile):
 		self.connector.query("INSERT INTO Persons "
-							 "(gender, interestedIn, birthMonth, birthDay, birthYear, firstName, lastName "
-							 "VALUES ({}, {}, {}, {}, {}, {}, {})".format(userProfile.gender,
-																		  userProfile.interestedIn,
-																		  userProfile.birthMonth,
-																		  userProfile.birthDay,
-																		  userProfile.birthYear,
-																		  userProfile.firstName,
-																		  userProfile.lastName))
-
+							 "(gender, interestedIn, birthMonth, birthDay, birthYear, firstName, lastName) "
+							 "VALUES ('{}', '{}', {}, {}, {}, '{}', '{}')".format(userProfile.gender, userProfile.interestedIn, userProfile.birthMonth, userProfile.birthDay, userProfile.birthYear, userProfile.first, userProfile.last))
 
 	def loadAllUserProfiles(self):
 		self.connector.query("SELECT * FROM Persons")
 		allUserProfiles = []
 		for result in self.connector.fetchResults():
-			userProfile = UserProfileData(result["gender"],
-										  result["interestedIn"],
-										  result["firstName"],
-										  result["lastName"],
-										  result["birthDay"],
-										  result["birthMonth"],
-										  result["birthYear"])
+			#TODO
+			# Load the user's pictures here as well.
+			userProfile = UserProfileData(result["gender"], result["interestedIn"], None)
+										  
+			userProfile.first = result["firstName"]
+			userProfile.last = result["lastName"]
+			userProfile.birthDay = result["birthDay"]
+			userProfile.birthMonth = result["birthMonth"]
+			userProfile.brithYear = result["birthYear"]
+
 			allUserProfiles.append(userProfile)
 
 		return allUserProfiles

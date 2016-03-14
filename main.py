@@ -10,9 +10,9 @@ import pickle
 
 def collectUserInfo(dbMgr, driver, cred):
 	fbObj = FacebookObject(driver, cred[0], cred[1])
-
 	fbObj.login()
 
+	time.sleep(3)
 	outputFile = open("friends_output.txt", "r+")
 	userFriends = pickle.load(outputFile)
 	profileMiner = ProfileMiner(driver)

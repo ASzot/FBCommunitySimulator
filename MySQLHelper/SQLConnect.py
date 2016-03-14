@@ -5,17 +5,26 @@ class SQLConnect:
 		self.host = host
 		self.user = user
 		self.passwd = passwd
-		self.db = db
+		self.dbName = db
 	
 	def connect(self):
-		self.db = MySQLdb.connect(host=self.host, user=self.user, passwd=self.passwd, db=self.db)
-		self.cur = self.db.cursor(MySQLdb.cursors.DictCursor)
-	
+		print "Connecting to " + self.host + " as " + self.user + " with the password " + self.passwd + " on " + self.dbName
+
+		self.db = MySQLdb.connect(host=self.host, user=self.user, passwd=self.passwd, db=self.dbName)
+		self.cur = self.db.cursor()
+
+
 	def disconnect(self):
 		self.db.close()
 
+
 	def query(self, query):
-		self.cur.execute(query)
+		try:
+			self.cur.execute(query)
+			self.db.commit()
+		except:
+			self.db.rollback()
+
 
 	def fetchResults(self):
 		for row in self.cur.fetchall:
