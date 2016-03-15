@@ -12,7 +12,6 @@ class ProfileMiner:
 
 	def __init__(self, driver):
 		self.driver = driver
-		self.likesData = []
 
 
 	@staticmethod
@@ -45,6 +44,8 @@ class ProfileMiner:
 
 
 	def getProfileObj(self):
+		if self.failed:
+			return None
 		profileObj = UserProfileData(self.genderData, self.interestedIn, self.userImages)
 		return profileObj
 
@@ -54,9 +55,14 @@ class ProfileMiner:
 
 		self.userImages = []
 
-		self.__minePics()
-		self.__mineLikes()
-		self.__mineInfo()
+		if not self.__minePics():
+			self.failed = True
+		elif not self.__mineLikes():
+			self.failed = True
+		elif not self.__mineInfo():
+			self.failed = True
+		else:
+			self.failed = False
 
 
 	def __getDataFor(self, dataFieldLblName):
@@ -89,7 +95,10 @@ class ProfileMiner:
 		# TOOD Make a way to get all of the user's likes. 
 		#self.driver.execute_script("$(#pageFooter).scrollIntoView()")
 
-		allLikedPages = self.driver.find_elements_by_xpath("//div[@class='fsl fwb fcb']");
+		try:
+			allLikedPages = self.driver.find_elements_by_xpath("//div[@class='fsl fwb fcb']")
+		except NoSuchElementException:
+			return False
 
 		for likedPage in allLikedPages:
 			# Get the link child
@@ -98,13 +107,19 @@ class ProfileMiner:
 			# Get the link location 
 			likedPageDest = likedPageLink.get_attribute("href")
 			fbDataMgr.addLikeData(likedPageDest)
+
+		return True
 		
 
 
 	def __minePics(self):
 		self.driver.get(self.profileURL + "/photos")
 
-		profilePicElem = self.driver.find_element_by_class_name("profilePic")
+		try:
+			profilePicElem = self.driver.find_element_by_class_name("profilePic")
+		except NoSuchElementException:
+			return False
+
 		profileImgSrc = profilePicElem.get_attribute("src")
 
 		uniqueSaveName = get_a_uuid()
@@ -125,11 +140,19 @@ class ProfileMiner:
 
 			shouldContinue = True
 			while shouldContinue:
-				nextBtnElem = self.driver.find_element_by_xpath("//a[contains(@class, 'next')]")
+				try:
+					nextBtnElem = self.driver.find_element_by_xpath("//a[contains(@class, 'next')]")
+				except NoSuchElementException:
+					return False
+
 				nextBtnElem.click()
 				time.sleep(1)
 
-				photoElem = self.driver.find_element_by_class_name("spotlight")
+				try:
+					photoElem = self.driver.find_element_by_class_name("spotlight")
+				except NoSuchElementException:
+					return False
+
 				imgSrc = photoElem.get_attribute("src")
 
 				if (imgSrc in imgSrcDests):
@@ -150,6 +173,8 @@ class ProfileMiner:
 			self.userImages.append(uniqueSaveName)
 
 			urllib.urlretrieve(imgSrcDest, "images/" + uniqueSaveName)
+
+		return True
 
 
 

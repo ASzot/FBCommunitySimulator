@@ -1,5 +1,6 @@
 from MySQLHelper.SQLConnect import SQLConnect
 from ProfileData import UserProfileData
+from FacebookMining.FbDataMgr import FbDataMgr
 import pickle
 
 class DbMgr: 
@@ -40,6 +41,11 @@ class DbMgr:
 							 "(gender, interestedIn, birthMonth, birthDay, birthYear, firstName, lastName) "
 							 "VALUES ('{}', '{}', {}, {}, {}, '{}', '{}')".format(userProfile.gender, userProfile.interestedIn, userProfile.birthMonth, userProfile.birthDay, userProfile.birthYear, userProfile.first, userProfile.last))
 
+		# Save the user photo locations.
+		lastInsertId = self.connector.getLastInsertId()
+		for location in userProfile.userImages:
+			self.connector.query("INSERT INTO Images (location, userId) VALUES ('{}', {})".format(location, lastInsertId))
+
 	def loadAllUserProfiles(self):
 		self.connector.query("SELECT * FROM Persons")
 		allUserProfiles = []
@@ -60,8 +66,11 @@ class DbMgr:
 
 
 	def saveMinedLikeData(self, profileMiner):
+
+		fbDataMgr = FbDataMgr.Instance()
+
 		outputFile = open("Data/all_like_data.txt", "w")
-		pickle.dump(profileMiner.likesData, outputFile)
+		pickle.dump(fbDataMgr.likeData, outputFile)
 
 
 	def loadMinedLikedData(self):

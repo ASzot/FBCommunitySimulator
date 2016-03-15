@@ -18,6 +18,10 @@ class SQLConnect:
 		self.db.close()
 
 
+	def getLastInsertId(self):
+		return self.cur.lastrowid
+
+
 	def query(self, query):
 		try:
 			self.cur.execute(query)

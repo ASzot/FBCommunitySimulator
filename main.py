@@ -22,8 +22,10 @@ def collectUserInfo(dbMgr, driver, cred):
 	for userFriend in userFriends:
 		profileMiner.mineProfile(userFriend)
 		profileObj = profileMiner.getProfileObj()
-		profileObj.genUserInfo(nameFactory)
-		dbMgr.saveUserProfile(profileObj)
+
+		if profileObj is not None:
+			profileObj.genUserInfo(nameFactory)
+			dbMgr.saveUserProfile(profileObj)
 
 	dbMgr.saveMinedLikedData(profileMiner)
 
