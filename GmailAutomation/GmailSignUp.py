@@ -82,28 +82,77 @@ class GmailSignUp:
         captchaValue = str(raw_input("Please enter captcha..."))
         captchaElem.send_keys(captchaValue)
 
-        # It will either ask for a cell phone number to verify or it will create the email account.
-        try:
-            submitBtn = driver.find_element_by_name("submitbtn")
-        except NoSuchElementException:
-            # It is asking for a cell phone number.
+        submitBtn.click()
+
+        if not self.__continueToGmail(driver):
             return self.__enterCellPhone(cellNumber, driver)
 
+        self.__checkAdditionalLogin(driver)
+        self.__closeGmailHelp(driver)
+
+        return True
+
+
+    def __checkAdditionalLogin(self, driver):
+        try:
+            passwdElem = driver.find_element_by_name("Passwd")
+        except NoSuchElementException:
+            return  # No Additional sign in required.
+
+        # Additional sign in required.
+        passwdElem.send_keys(self.setPasswd)
+
+        signInBtnElem = driver.find_element_by_name("signIn")
+        signInBtnElem.click()
+
+
+    def __continueToGmail(self, driver):
+        # It will either ask for a cell phone number to verify or it will create the email account.
+        try:
+            submitBtn = driver.find_element_by_name("submitbutton")
+        except NoSuchElementException:
+            # It is asking for a cell phone number.
+            return False
+
         if submitBtn.get_attribute("value") != "Continue to Gmail":
-            return self.__enterCellPhone(cellNumber, driver)
+            return False
 
         submitBtn.click()
 
+        return True
+
+
+    def __closeGmailHelp(self, driver):
         try:
             closeHelpBtn = driver.find_element_by_id("close-button")
             closeHelpBtn.click()
         except NoSuchElementException:
             pass  # There is no problem if there is no help screen just move on.
 
-        return True
+
 
     def __enterCellPhone(self, cellNumber, driver):
-        return False
+        deviceNumElem = driver.find_element_by_name("deviceAddress")
+        deviceNumElem.send_keys(cellNumber)
+
+        continueBtn = driver.find_element_by_name("SendCode")
+        continueBtn.click()
+
+        verifEnterElem = driver.find_element_by_name("smsUserPin")
+        continueBtn = driver.find_element_by_name("VerifyPhone")
+
+        verifCode = str(raw_input("Enter verification code..."))
+
+        verifEnterElem.send_keys(verifCode)
+        continueBtn.click()
+
+        if not self.__continueToGmail(driver):
+            return False
+
+        self.__checkAdditionalLogin(driver)
+        self.__closeGmailHelp(driver)
+
+        return True
 
 
 
