@@ -86,6 +86,8 @@ class ProfileMiner:
 		except NoSuchElementException:
 			self.interestedIn = None
 
+		return True
+
 
 	def __mineLikes(self):
 		self.driver.get(self.profileURL + "/likes")
@@ -98,11 +100,16 @@ class ProfileMiner:
 		try:
 			allLikedPages = self.driver.find_elements_by_xpath("//div[@class='fsl fwb fcb']")
 		except NoSuchElementException:
-			return False
+			# Not a big deal if the liked pages cannot be retrieved.
+			return True
 
 		for likedPage in allLikedPages:
 			# Get the link child
-			likedPageLink = likedPage.find_element_by_tag_name("a")
+			try:
+				likedPageLink = likedPage.find_element_by_tag_name("a")
+			except NoSuchElementException:
+				# Not a big deal if the liked pages cannot be retrieved.
+				return True
 
 			# Get the link location 
 			likedPageDest = likedPageLink.get_attribute("href")

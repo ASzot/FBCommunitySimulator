@@ -65,14 +65,13 @@ class DbMgr:
 		return allUserProfiles
 
 
-	def saveMinedLikeData(self, profileMiner):
-
+	def saveMinedLikeData(self):
 		fbDataMgr = FbDataMgr.Instance()
 
-		outputFile = open("Data/all_like_data.txt", "w")
+		outputFile = open("../Data/all_like_data.txt", "w")
 		pickle.dump(fbDataMgr.likeData, outputFile)
 
 
 	def loadMinedLikedData(self):
-		inputFile = open("Data/all_like_data.txt", "r+")
+		inputFile = open("../Data/all_like_data.txt", "r+")
 		return pickle.load(inputFile)

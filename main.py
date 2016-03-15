@@ -24,6 +24,7 @@ def collectUserInfo(dbMgr, driver, cred):
 		profileObj = profileMiner.getProfileObj()
 
 		if profileObj is not None:
+			print "Saving user info"
 			profileObj.genUserInfo(nameFactory)
 			dbMgr.saveUserProfile(profileObj)
 
