@@ -68,6 +68,8 @@ class DbMgr:
 	def saveMinedLikeData(self):
 		fbDataMgr = FbDataMgr.Instance()
 
+		print "Saving all liked data!"
+		print len(fbDataMgr.likeData)
 		outputFile = open("../Data/all_like_data.txt", "w")
 		pickle.dump(fbDataMgr.likeData, outputFile)
 

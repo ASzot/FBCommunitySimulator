@@ -28,12 +28,11 @@ def collectUserInfo(dbMgr, driver, cred):
 			profileObj.genUserInfo(nameFactory)
 			dbMgr.saveUserProfile(profileObj)
 
-	dbMgr.saveMinedLikedData(profileMiner)
+	dbMgr.saveMinedLikedData()
 
 
 def run(dbMgr):
 	pass
-
 
 with open("cred.txt") as credFile:
 	cred = [line.rstrip('\n') for line in credFile]
@@ -42,6 +41,8 @@ sqlConnect = SQLConnect(cred[2], cred[3], cred[4], cred[5])
 sqlConnect.connect()
 
 dbMgr = DbMgr(sqlConnect)
+
+
 
 #ONLY RUN THIS THE FIRST TIME THE APPLICATION IS RUNNING
 #dbMgr.setupDatabase()
