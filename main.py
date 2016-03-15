@@ -28,7 +28,7 @@ def collectUserInfo(dbMgr, driver, cred):
 			profileObj.genUserInfo(nameFactory)
 			dbMgr.saveUserProfile(profileObj)
 
-	dbMgr.saveMinedLikedData()
+	dbMgr.saveMinedLikeData()
 
 
 def run(dbMgr):

@@ -7,7 +7,16 @@ class DbMgr:
 	def __init__(self, sqlConnector):
 		self.connector = sqlConnector
 
-	# WARNING ALL DATA WILL BE DELETED
+
+	def saveMinedLikeData(self):
+		fbDataMgr = FbDataMgr.Instance()
+
+		print "Saving all liked data!"
+		print len(fbDataMgr.likeData)
+		outputFile = open("../Data/all_like_data.txt", "w")
+		pickle.dump(fbDataMgr.likeData, outputFile)
+
+
 	def setupDatabase(self):
 		self.connector.query("DROP TABLE IF EXISTS Persons")
 		self.connector.query("CREATE TABLE Persons ("
@@ -63,15 +72,6 @@ class DbMgr:
 			allUserProfiles.append(userProfile)
 
 		return allUserProfiles
-
-
-	def saveMinedLikeData(self):
-		fbDataMgr = FbDataMgr.Instance()
-
-		print "Saving all liked data!"
-		print len(fbDataMgr.likeData)
-		outputFile = open("../Data/all_like_data.txt", "w")
-		pickle.dump(fbDataMgr.likeData, outputFile)
 
 
 	def loadMinedLikedData(self):
