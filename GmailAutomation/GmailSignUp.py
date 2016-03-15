@@ -63,12 +63,12 @@ class GmailSignUp:
         birthYearElem.send_keys(birthYear)
 
         #convert gender to selection
-        if gender == "female":
+        if gender == "Female":
             genderSelection = ":e"
-        if gender == "male":
+        elif gender == "Male":
             genderSelection = ":f"
-        if gender == "other":
-            genderSelection = ":g"
+        else:
+            genderSelection = ":e"
 
         selectGenderElem.click()
         genderSelectOptionElem = driver.find_element_by_id(genderSelection)

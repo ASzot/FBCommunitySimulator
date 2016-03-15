@@ -74,12 +74,12 @@ class DbMgr:
 				imageLocations.append(imageResult["location"])
 
 			userProfile = UserProfileData(result["gender"], result["interestedIn"], imageLocations)
-										  
-			userProfile.first = result["firstName"]
-			userProfile.last = result["lastName"]
+
+			userProfile.first = DbMgr.CorrectName(result["firstName"])
+			userProfile.last = DbMgr.CorrectName(result["lastName"])
 			userProfile.birthDay = result["birthDay"]
 			userProfile.birthMonth = result["birthMonth"]
-			userProfile.brithYear = result["birthYear"]
+			userProfile.birthYear = result["birthYear"]
 
 			userProfile.userId = result["id"]
 
@@ -91,3 +91,9 @@ class DbMgr:
 	def loadMinedLikedData(self):
 		inputFile = open("../Data/all_like_data.txt", "r+")
 		return pickle.load(inputFile)
+
+
+	@staticmethod
+	def CorrectName(name):
+		name = name.lower()
+		return name.capitalize()

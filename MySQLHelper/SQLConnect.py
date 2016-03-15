@@ -32,7 +32,7 @@ class SQLConnect:
 
 	def fetchResults(self):
 		results = []
-		for row in self.cur.fetchall:
+		for row in self.cur.fetchall():
 			results.append(row)
 		return results
 
