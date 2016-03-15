@@ -4,6 +4,7 @@ from selenium import webdriver
 from MySQLHelper.SQLConnect import SQLConnect
 from MySQLHelper.DbMgr import DbMgr
 from Core.NameFactory import NameFactory
+from ProfileMgr import ProfileMgr
 import time
 import pickle
 
@@ -31,6 +32,12 @@ def collectUserInfo(dbMgr, driver, cred):
 	dbMgr.saveMinedLikeData()
 
 
+def createAccounts(dbMgr, profileMgr):
+	profileMgr.users = dbMgr.loadAllUserProfiles()
+	# Update all the user's in the database with their email address and password.
+	profileMgr.createAccountGmails(dbMgr)
+
+
 def run(dbMgr):
 	pass
 
@@ -51,7 +58,11 @@ driver = webdriver.Firefox()
 
 # Either mine the data and save it to the database.
 # This is creating the database and setting up the necessary data.
-collectUserInfo(dbMgr, driver, cred)
+#collectUserInfo(dbMgr, driver, cred)
+
+# Initial setup of all of the accounts.
+profileMgr = ProfileMgr(driver, cred[6])
+createAccounts(dbMgr, profileMgr)
 
 # Or use the data already present in the database to load and update the users 
 #run(dbMgr)

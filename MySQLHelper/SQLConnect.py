@@ -11,7 +11,7 @@ class SQLConnect:
 		print "Connecting to " + self.host + " as " + self.user + " with the password " + self.passwd + " on " + self.dbName
 
 		self.db = MySQLdb.connect(host=self.host, user=self.user, passwd=self.passwd, db=self.dbName)
-		self.cur = self.db.cursor()
+		self.cur = self.db.cursor(MySQLdb.cursors.DictCursor)
 
 
 	def disconnect(self):
@@ -31,8 +31,10 @@ class SQLConnect:
 
 
 	def fetchResults(self):
+		results = []
 		for row in self.cur.fetchall:
-			yield row
+			results.append(row)
+		return results
 
 
 		 

@@ -55,19 +55,33 @@ class DbMgr:
 		for location in userProfile.userImages:
 			self.connector.query("INSERT INTO Images (location, userId) VALUES ('{}', {})".format(location, lastInsertId))
 
+
+	def saveUserProfileEmailData(self, userProfile):
+		self.connector.query("UPDATE Persons SET email = '{}', emailPass = '{}' WHERE userId = {}".format(userProfile.emailAddress, userProfile.emailPasswd, userProfile.userId))
+
 	def loadAllUserProfiles(self):
 		self.connector.query("SELECT * FROM Persons")
 		allUserProfiles = []
-		for result in self.connector.fetchResults():
-			#TODO
-			# Load the user's pictures here as well.
-			userProfile = UserProfileData(result["gender"], result["interestedIn"], None)
+		results = self.connector.fetchResults()
+		for result in results:
+			userId = result["id"]
+
+			# Get all of the images associated with the ID.
+			self.connector.query("SELECT * FROM Images WHERE userId = {}".format(userId))
+			imageResults = self.connector.fetchResults()
+			imageLocations = []
+			for imageResult in imageResults:
+				imageLocations.append(imageResult["location"])
+
+			userProfile = UserProfileData(result["gender"], result["interestedIn"], imageLocations)
 										  
 			userProfile.first = result["firstName"]
 			userProfile.last = result["lastName"]
 			userProfile.birthDay = result["birthDay"]
 			userProfile.birthMonth = result["birthMonth"]
 			userProfile.brithYear = result["birthYear"]
+
+			userProfile.userId = result["id"]
 
 			allUserProfiles.append(userProfile)
 

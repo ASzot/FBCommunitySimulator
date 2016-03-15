@@ -3,8 +3,22 @@ from random import randint
 class UserProfileData:
 
     def __init__(self, gender, interestedIn, userImages):
+        self.emailAddress = ""
+        self.emailPasswd = ""
+        self.userId = -1
         self.gender = gender
+        if self.gender == "None":
+            self.gender = "Male"
+
         self.interestedIn = interestedIn
+        if self.interestedIn == "None":
+            if self.gender == "Male":
+                self.interestedIn = "Female"
+            elif self.gender == "Female":
+                self.interestedIn = "Male"
+            else:
+                self.interestedIn = "Female"
+
         self.userImages = userImages
 
 
